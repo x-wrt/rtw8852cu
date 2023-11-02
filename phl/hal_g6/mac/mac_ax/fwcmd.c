@@ -3633,7 +3633,7 @@ static u32 get_scanofld_event(struct mac_ax_adapter *adapter, struct rtw_c2h_inf
 		adapter->scanofld_info.fw_chlist_busy[rsp->band] = 0;
 		PLTFM_MUTEX_UNLOCK(&adapter->scanofld_info.fw_chlist_state_lock);
 		adapter->scanofld_info.fw_scan_busy[rsp->band] = 0;
-		/* fall through */
+		fallthrough;
 
 	case MAC_AX_SCAN_GET_RPT_NOTIFY:
 		rsp->scanned_round = GET_FIELD(pkg->dword0, FWCMD_C2H_SCANOFLD_RSP_SCANNED_ROUND);
