@@ -15,11 +15,14 @@ EXTRA_CFLAGS += -Wno-unused-label
 #EXTRA_CFLAGS += -Wno-unused-function
 EXTRA_CFLAGS += -Wno-unused
 #EXTRA_CFLAGS += -Wno-uninitialized
+EXTRA_CFLAGS += $(EXT_EXTRA_CFLAGS)
 
 GCC_VER_49 := $(shell echo `$(CC) -dumpversion | cut -f1-2 -d.` \>= 4.9 | bc )
 
+ifndef ARCH
 SUBARCH := $(shell uname -m | sed -e s/i.86/i386/ | sed -e /aarch64/arm/ | sed -e s/ppc/powerpc/ | sed -e s/armv.l/arm/)
 ARCH ?= $(SUBARCH)
+endif
 
 ifeq ($(GCC_VER_49),1)
 EXTRA_CFLAGS += -Wno-date-time	# Fix compile error && warning on gcc 4.9 and later
@@ -645,7 +648,7 @@ include $(wildcard $(DRV_PATH)/platform/*.mk)
 
 # Import platform specific compile options
 EXTRA_CFLAGS += -I$(src)/platform
-#_PLATFORM_FILES := platform/platform_ops.o
+_PLATFORM_FILES := platform/platform_ops.o
 OBJS += $(_PLATFORM_FILES)
 
 ########### CUSTOMER ################################
@@ -680,8 +683,7 @@ endif
 include $(src)/phl/phl.mk
 
 
-obj-$(CONFIG_RTL8852CU) := $(MODULE_NAME).o
-obj-$(CONFIG_RTL8852CU) := $(MODULE_NAME).o
+obj-m := $(MODULE_NAME).o
 $(MODULE_NAME)-y = $(OBJS)
 
 ############# MEMORY MANAGMENT #############
