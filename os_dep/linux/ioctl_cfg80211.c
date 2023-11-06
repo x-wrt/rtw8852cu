@@ -10085,7 +10085,7 @@ static int rtw_cfg80211_init_wiphy(_adapter *adapter, struct wiphy *wiphy)
 	wiphy->flags |= WIPHY_FLAG_AP_UAPSD;
 #endif
 
-#if defined(CONFIG_PM) && (LINUX_VERSION_CODE >= KERNEL_VERSION(3, 0, 0))
+#if defined(CONFIG_PM_OFF) && (LINUX_VERSION_CODE >= KERNEL_VERSION(3, 0, 0))
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(4, 12, 0) || defined (COMPAT_KERNEL_RELEASE_4_19)
 	wiphy->max_sched_scan_reqs = 1;
 #else
@@ -10104,7 +10104,7 @@ static int rtw_cfg80211_init_wiphy(_adapter *adapter, struct wiphy *wiphy)
 #endif
 #endif
 
-#if defined(CONFIG_PM) && (LINUX_VERSION_CODE >= KERNEL_VERSION(3, 0, 0))
+#if defined(CONFIG_PM_OFF) && (LINUX_VERSION_CODE >= KERNEL_VERSION(3, 0, 0))
 #if (LINUX_VERSION_CODE < KERNEL_VERSION(3, 11, 0))
 	wiphy->wowlan = wowlan_stub;
 #else

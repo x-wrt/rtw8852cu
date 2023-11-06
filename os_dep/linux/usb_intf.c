@@ -730,7 +730,7 @@ _adapter *rtw_usb_primary_adapter_init(struct dvobj_priv *dvobj,
 		goto free_adapter;
 	}
 
-#ifdef CONFIG_PM
+#ifdef CONFIG_PM_OFF
 #if (LINUX_VERSION_CODE > KERNEL_VERSION(2, 6, 18))
 	if (dvobj_to_pwrctl(dvobj)->bSupportRemoteWakeup) {
 		dvobj_to_usb(dvobj)->pusbdev->do_remote_wakeup = 1;
