@@ -122,12 +122,12 @@ void rtw_regd_free_du_wdev(struct wiphy *wiphy)
 		goto exit;
 
 	rtnl_lock_needed = rtw_rtnl_lock_needed(dvobj);
-	if (rtnl_lock_needed)
+	if (rtnl_lock_needed && 0)
 		rtnl_lock();
 
 	unregister_netdevice(wiphy_data->du_wdev->netdev);
 
-	if (rtnl_lock_needed)
+	if (rtnl_lock_needed && 0)
 		rtnl_unlock();
 
 	wiphy_data->du_wdev = NULL;
@@ -384,7 +384,7 @@ void rtw_update_wiphy_regd(struct wiphy *wiphy, struct get_chplan_resp *chplan, 
 		goto free_regd;
 	}
 
-	if (rtnl_lock_needed)
+	if (rtnl_lock_needed && 0)
 		rtnl_lock();
 
 	#if (LINUX_VERSION_CODE >= KERNEL_VERSION(5, 12, 0))
@@ -399,7 +399,7 @@ void rtw_update_wiphy_regd(struct wiphy *wiphy, struct get_chplan_resp *chplan, 
 	rtw_regd_override_dfs_state(wiphy, chplan, false);
 	#endif
 
-	if (rtnl_lock_needed)
+	if (rtnl_lock_needed && 0)
 		rtnl_unlock();
 
 	if (ret != 0)
@@ -418,7 +418,7 @@ static void rtw_regd_overide_flags(struct wiphy *wiphy, struct get_chplan_resp *
 	struct ieee80211_channel *ch;
 	unsigned int i, j;
 
-	if (rtnl_lock_needed)
+	if (rtnl_lock_needed && 0)
 		rtnl_lock();
 
 	/* all channels disable */
@@ -466,7 +466,7 @@ static void rtw_regd_overide_flags(struct wiphy *wiphy, struct get_chplan_resp *
 		}
 	}
 
-	if (rtnl_lock_needed)
+	if (rtnl_lock_needed && 0)
 		rtnl_unlock();
 }
 
@@ -478,7 +478,7 @@ static void rtw_regd_apply_dfs_flags(struct get_chplan_resp *chplan, bool rtnl_l
 	unsigned int i;
 	struct ieee80211_channel *chan;
 
-	if (rtnl_lock_needed)
+	if (rtnl_lock_needed && 0)
 		rtnl_lock();
 
 	/* channels apply by channel plans. */
@@ -503,7 +503,7 @@ static void rtw_regd_apply_dfs_flags(struct get_chplan_resp *chplan, bool rtnl_l
 		}
 	}
 
-	if (rtnl_lock_needed)
+	if (rtnl_lock_needed && 0)
 		rtnl_unlock();
 }
 
@@ -741,7 +741,7 @@ static void rtw_reg_notifier(struct wiphy *wiphy, struct regulatory_request *req
 	enum rtw_regd_inr inr;
 
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(3, 11, 0))
-	rtw_set_rtnl_lock_holder(dvobj, current);
+	if (0) rtw_set_rtnl_lock_holder(dvobj, current);
 #endif
 
 #ifdef CONFIG_RTW_DEBUG
@@ -789,7 +789,7 @@ static void rtw_reg_notifier(struct wiphy *wiphy, struct regulatory_request *req
 	}
 
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(3, 11, 0))
-	rtw_set_rtnl_lock_holder(dvobj, NULL);
+	if (0) rtw_set_rtnl_lock_holder(dvobj, NULL);
 #endif
 }
 
@@ -959,9 +959,9 @@ static void async_cac_change_work_hdl(_workitem *work)
 
 		evt = LIST_CONTAINOR(list, struct async_cac_change_evt, list);
 
-		rtnl_lock();
+		if (0) rtnl_lock();
 		cfg80211_cac_event(evt->netdev, &evt->chandef, evt->event, GFP_KERNEL);
-		rtnl_unlock();
+		if (0) rtnl_unlock();
 
 		rtw_mfree(evt, sizeof(*evt));
 	}
@@ -1236,13 +1236,13 @@ void rtw_cfg80211_nop_started_event(struct rf_ctl_t *rfctl, u8 band_idx
 		return;
 
 	rtnl_lock_needed = rtw_rtnl_lock_needed(dvobj);
-	if (rtnl_lock_needed)
+	if (rtnl_lock_needed && 0)
 		rtnl_lock();
 
 	rtw_regd_override_dfs_state(wiphy, chplan, true);
 	rtw_regd_schedule_dfs_chan_update(wiphy);
 
-	if (rtnl_lock_needed)
+	if (rtnl_lock_needed && 0)
 		rtnl_unlock();
 
 	rtw_free_get_chplan_resp(chplan);

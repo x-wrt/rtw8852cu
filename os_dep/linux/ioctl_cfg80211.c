@@ -6826,10 +6826,10 @@ void rtw_pd_iface_free(struct wiphy *wiphy)
 		, MAC_ARG(wdev_address(wiphy_data->pd_wdev)));
 
 	rtnl_lock_needed = rtw_rtnl_lock_needed(dvobj);
-	if (rtnl_lock_needed)
+	if (rtnl_lock_needed && 0)
 		rtnl_lock();
 	cfg80211_unregister_wdev(wiphy_data->pd_wdev);
-	if (rtnl_lock_needed)
+	if (rtnl_lock_needed && 0)
 		rtnl_unlock();
 
 	rtw_mfree((u8 *)wiphy_data->pd_wdev, sizeof(struct wireless_dev));
