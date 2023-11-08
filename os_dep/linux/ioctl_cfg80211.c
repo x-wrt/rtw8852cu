@@ -10770,7 +10770,7 @@ int rtw_wiphy_register(struct wiphy *wiphy)
 	}
 
 	if (rtw_get_chplan_cmd(wiphy_to_adapter(wiphy), RTW_CMDF_DIRECTLY, &chplan) == _SUCCESS)
-		rtw_regd_change_complete_sync(wiphy, chplan, 0);
+		rtw_regd_change_complete_sync(wiphy, chplan, 1);
 	else
 		rtw_warn_on(1);
 

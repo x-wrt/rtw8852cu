@@ -363,6 +363,7 @@ u32 h2c_agg_enqueue(struct mac_ax_adapter *adapter, struct h2c_buf *h2cb)
 	struct mac_ax_h2c_agg_node *h2c_agg_node = NULL;
 	u32 ret = MACSUCCESS;
 
+	local_bh_disable();
 	PLTFM_MUTEX_LOCK(&adapter->h2c_agg_info.h2c_agg_lock);
 
 	if (!adapter->h2c_agg_info.h2c_agg_en) {
@@ -394,6 +395,7 @@ u32 h2c_agg_enqueue(struct mac_ax_adapter *adapter, struct h2c_buf *h2cb)
 
 fail:
 	PLTFM_MUTEX_UNLOCK(&adapter->h2c_agg_info.h2c_agg_lock);
+	local_bh_enable();
 	return ret;
 }
 

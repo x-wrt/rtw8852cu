@@ -79,9 +79,11 @@ fail:
 
 void mac_h2c_agg_enable(struct mac_ax_adapter *adapter, u8 enable)
 {
+	local_bh_disable();
 	PLTFM_MUTEX_LOCK(&adapter->h2c_agg_info.h2c_agg_lock);
 	adapter->h2c_agg_info.h2c_agg_en = enable;
 	PLTFM_MUTEX_UNLOCK(&adapter->h2c_agg_info.h2c_agg_lock);
+	local_bh_enable();
 }
 
 u32 mac_h2c_agg_tx(struct mac_ax_adapter *adapter)
@@ -104,6 +106,7 @@ u32 mac_h2c_agg_tx(struct mac_ax_adapter *adapter)
 	u8 *cur_h2cb_data = NULL;
 	u8 *buf = NULL;
 
+	local_bh_disable();
 	PLTFM_MUTEX_LOCK(&adapter->h2c_agg_info.h2c_agg_lock);
 
 	if (!adapter->h2c_agg_info.h2c_agg_queue_head)
@@ -214,6 +217,7 @@ fail:
 		adapter->h2c_agg_info.h2c_agg_pkt_num = 0;
 	}
 	PLTFM_MUTEX_UNLOCK(&adapter->h2c_agg_info.h2c_agg_lock);
+	local_bh_enable();
 	return ret;
 }
 
@@ -222,6 +226,7 @@ void mac_h2c_agg_flush(struct mac_ax_adapter *adapter)
 	struct mac_ax_h2c_agg_node *cur_agg_node = NULL;
 	struct mac_ax_h2c_agg_node *tmp_agg_node = NULL;
 
+	local_bh_disable();
 	PLTFM_MUTEX_LOCK(&adapter->h2c_agg_info.h2c_agg_lock);
 	cur_agg_node = adapter->h2c_agg_info.h2c_agg_queue_head;
 
@@ -240,4 +245,5 @@ void mac_h2c_agg_flush(struct mac_ax_adapter *adapter)
 	adapter->h2c_agg_info.h2c_agg_queue_last = NULL;
 	adapter->h2c_agg_info.h2c_agg_pkt_num = 0;
 	PLTFM_MUTEX_UNLOCK(&adapter->h2c_agg_info.h2c_agg_lock);
+	local_bh_enable();
 }
