@@ -175,6 +175,8 @@ static u32 role_free(struct mac_ax_adapter *adapter)
 	role_head = adapter->role_tbl;
 	if (role_head) {
 		role_pool = role_head->role_tbl_pool;
+
+		PLTFM_MUTEX_LOCK(&role_head->lock);
 		while (role_queue_len(role_head) > 0) {
 			role = role_dequeue(adapter, role_head);
 			if (role) {
@@ -184,8 +186,11 @@ static u32 role_free(struct mac_ax_adapter *adapter)
 				break;
 			}
 		}
+		PLTFM_MUTEX_UNLOCK(&role_head->lock);
+		PLTFM_MUTEX_DEINIT(&role_head->lock);
 	}
 	if (role_pool) {
+		PLTFM_MUTEX_LOCK(&role_pool->lock);
 		while (role_queue_len(role_pool) > 0) {
 			role = role_dequeue(adapter, role_pool);
 			if (role) {
@@ -195,6 +200,8 @@ static u32 role_free(struct mac_ax_adapter *adapter)
 				break;
 			}
 		}
+		PLTFM_MUTEX_UNLOCK(&role_pool->lock);
+		PLTFM_MUTEX_DEINIT(&role_pool->lock);
 	}
 
 	return ret;
@@ -369,14 +376,7 @@ u32 role_tbl_exit(struct mac_ax_adapter *adapter)
 		return MACMEMRO;
 	}
 
-	PLTFM_MUTEX_LOCK(&role_head->lock);
-	PLTFM_MUTEX_LOCK(&role_pool->lock);
 	ret = role_free(adapter);
-	PLTFM_MUTEX_UNLOCK(&role_pool->lock);
-	PLTFM_MUTEX_UNLOCK(&role_head->lock);
-
-	PLTFM_MUTEX_DEINIT(&role_head->lock);
-	PLTFM_MUTEX_DEINIT(&role_pool->lock);
 
 	if (ret != MACSUCCESS)
 		PLTFM_MSG_ERR("%s memory free failed\n", __func__);
